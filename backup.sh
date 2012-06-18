@@ -17,7 +17,7 @@ fi
 
 # .. we want to use the project's ruby (and gemset).
 # Therefore, cd into the backup dir causing its .rvmrc to run
-cd /Users/jared/git/usgo/gocongress/backup
+cd $backupdir
 echo "Heroku gem version is: $(heroku version)" | logger
 
 # Old method: Use taps to pull into a sqlite db
