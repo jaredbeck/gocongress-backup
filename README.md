@@ -10,3 +10,8 @@ heroku pgbackups.
 To test this script through launchd, run:
 
     sudo launchctl start org.gocongress.backup
+
+See Also
+----
+
+http://singlebrook.com/blog/scheduling-a-shell-script-with-launchd
