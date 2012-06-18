@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" \
+"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+    <!-- Contains a unique string that identifies your daemon to launchd.
+    This key is required. -->
+    <key>Label</key>
+    <string>org.gocongress.backup</string>
+
+    <!-- Contains the arguments [to exec()] used to launch your daemon.
+    This key is required.  -->
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/bash</string>
+      <string>/Users/jared/git/usgo/gocongress/backup/backup.sh</string>
+    </array>
+    
+    <!-- This optional key specifies the user to run the job as. This key
+    is only applicable when launchd is running as root. -->
+    <key>UserName</key>
+    <string>jared</string>
+
+    <!-- This optional key causes the job to be started every calendar interval
+    as specified. Missing arguments are considered to be wildcard. The
+    semantics are much like crontab(5).  Unlike cron which skips job
+    invocations when the computer is asleep, launchd will start the job the
+    next time the computer wakes up.  If multiple intervals transpire
+    before the computer is woken, those events will be coalesced into one
+    event upon wake from sleep. -->
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Minute</key>
+      <integer>32</integer>
+      <key>Hour</key>
+      <integer>2</integer>
+    </dict>
+
+    <!-- low priority -->
+    <key>Nice</key>
+    <integer>20</integer>
+    <key>LowPriorityIO</key>
+    <true/>
+</dict>
+</plist>
