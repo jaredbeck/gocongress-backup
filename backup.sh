@@ -21,11 +21,12 @@ cd $backupdir
 echo "Heroku gem version is: $(heroku version)" | logger
 
 # Old method: Use taps to pull into a sqlite db
-heroku db:pull sqlite://$backupdir/$curdate.db --app gocongress --confirm gocongress
+# heroku db:pull sqlite://$backupdir/$curdate.db --app gocongress --confirm gocongress
 
 # New method: Use pgbackups to pull into a psql dump
+# capture --expire automatically deletes oldest backup
 echo "Starting pgbackups capture" | logger
-heroku pgbackups:capture --app gocongress | logger
+heroku pgbackups:capture --expire --app gocongress | logger
 bkp_url=`heroku pgbackups:url --app gocongress`
 curl -o $backupdir/$curdate.dump $bkp_url
 du -h $backupdir/$curdate.dump | logger
