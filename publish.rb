@@ -4,12 +4,10 @@
 # =========================
 #
 # find the latest backup
-# pg_restore it
-# connect to postgres and delete data not in the latest year
-# pg_dump it
+# delete records from previous years
 # encrypt the dump with DES3
   # openssl des3 -pass derp < herp.dump > herp.dump.des3
-# upload to S3
+# upload to S3 (using fog?)
 
 require 'date'
 
@@ -47,9 +45,41 @@ module BackupPublisher
     end
   end
 
+  module Db
+    extend Die
+
+    def self.cleanup path
+      create
+      restore path
+      # delete records from previous years
+        # see `delete_from_prev_years.sql`
+      # dump
+      # drop
+    end
+
+    def self.create
+      die('Cannot create db') unless system("createdb -T template0 #{name}")
+    end
+
+    def self.drop
+      die('Cannot drop db') unless system("dropdb #{name}")
+    end
+
+    def self.name
+      yyyymmdd = Date.today.strftime("%Y%m%d")
+      "usgc_cleanup_#{yyyymmdd}"
+    end
+
+    def self.restore path
+      unless system("pg_restore --no-acl --no-owner -d #{name} #{path}")
+        die('Cannot restore db')
+      end
+    end
+  end
+
   def self.main
     Config.check
-    puts LatestBackup.in Config.month_dir
+    Db.cleanup LatestBackup.in Config.month_dir
   end
 end
 
